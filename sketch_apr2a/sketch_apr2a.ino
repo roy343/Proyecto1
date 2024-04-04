@@ -63,13 +63,14 @@ void loop() {
   int boolB = intToBool(inB);
   int boolC = intToBool(inC);
 
-  int decimal = BCD_TO_DEC(0, 0, 0);
+  int decimal = BCD_TO_DEC(boolA, boolB, boolC);
 
   Serial.println(decimal);
+  lcd_1.setCursor(0, 1);
   lcd_1.print(decimal);
 
 
-  delay(1000);
+  delay(100);
 }
 
 int grayCode(int num){
