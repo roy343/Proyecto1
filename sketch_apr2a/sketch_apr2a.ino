@@ -1,3 +1,5 @@
+#include <LiquidCrystal.h>
+
 const int A = 2;
 const int B = 3;
 const int C = 4;
@@ -5,6 +7,7 @@ const int TRIG = 5;
 const int ECHO = 6;
 const int test = 7;
 
+LiquidCrystal lcd_1(13, 12, 11, 10, 9, 8);
 
 void setup() {
   Serial.begin(9600); 
@@ -14,6 +17,8 @@ void setup() {
   pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT);
   pinMode(test, OUTPUT);
+
+  lcd_1.begin(16, 2);
 
 }
 
@@ -29,18 +34,6 @@ void loop() {
   digitalWrite(TRIG, HIGH);
   delayMicroseconds(5);
   digitalWrite(TRIG, LOW);
-
-  int inA = analogRead(A0);
-  int inB = analogRead(A1);
-  int inC = analogRead(A2);
-
-  int boolA = intToBool(inA);
-  int boolB = intToBool(inB);
-  int boolC = intToBool(inC);
-
-  Serial.println(boolA);
-  Serial.println(boolB);
-  Serial.println(boolC);
 
   int time = pulseIn(ECHO, HIGH);
   int cm = msToCm(time);
@@ -61,6 +54,20 @@ void loop() {
   digitalWrite(A, a);
   digitalWrite(B, b);
   digitalWrite(C, c);
+
+  int inA = analogRead(A0);
+  int inB = analogRead(A1);
+  int inC = analogRead(A2);
+
+  int boolA = intToBool(inA);
+  int boolB = intToBool(inB);
+  int boolC = intToBool(inC);
+
+  int decimal = BCD_TO_DEC(0, 0, 0);
+
+  Serial.println(decimal);
+  lcd_1.print(decimal);
+
 
   delay(1000);
 }
@@ -88,4 +95,34 @@ int intToBool(int num){
     return 1;
   }
 
+}
+
+int BCD_TO_DEC(int a, int b, int c){
+  if(!a&&b&&c){
+    return 0;
+   }
+  if(a&&!b&&!c){
+    return 1;
+   }
+  if(a&&!b&&c){
+    return 2;
+   }
+  if(a&&b&&!c){
+    return 3;
+   }
+  if(a&&b&&c){
+    return 4;
+   }
+  if(!a&&!b&&!c){
+    return 5;
+   } 
+  if(!a&&!b&&c){
+    return 6;
+   }
+  if(!a&&b&&!c){
+    return 7;
+   }
+  else{
+    return "Error";
+  }
 }
