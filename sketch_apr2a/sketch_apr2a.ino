@@ -17,34 +17,35 @@ void setup() {
   pinMode(TRIG, OUTPUT);
   pinMode(ECHO, INPUT);
   pinMode(test, OUTPUT);
-
+  //Iniciador LCD
   lcd_1.begin(16, 2);
 
 }
 
 void loop() {
-
+  //Constantes
   int y;
   int a;
   int b;
   int c;
+  //setup sensor ultrasonico
   digitalWrite(test, LOW);
   digitalWrite(TRIG, LOW);
   delayMicroseconds(2);
   digitalWrite(TRIG, HIGH);
   delayMicroseconds(5);
   digitalWrite(TRIG, LOW);
-
+  //Conversion a 
   int time = pulseIn(ECHO, HIGH);
   int cm = msToCm(time);
   int range = rangeLimiter(cm);
-  //Serial.println("Decimal");
- // Serial.println(range);
- // Serial.println("Hexadecimal");
- // Serial.println(range, HEX);
-  //Serial.println("Gray");
+  Serial.println("Decimal");
+  Serial.println(range);
+  Serial.println("Hexadecimal");
+  Serial.println(range, HEX);
+  Serial.println("Gray");
   y = grayCode(range);
-  //Serial.println(y);
+  Serial.println(y);
   delay(1000);
   
   a = y/100%10;
